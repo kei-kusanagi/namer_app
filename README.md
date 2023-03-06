@@ -1,6 +1,11 @@
 
 ![full namer_app](https://user-images.githubusercontent.com/93227096/223277677-b39fe17e-320c-481d-9ce8-a0721f85d9fd.gif)
 
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/93227096/223277677-b39fe17e-320c-481d-9ce8-a0721f85d9fd.gif">
+</p>
+
+
 
 # namer_app
 
