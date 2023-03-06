@@ -1,5 +1,6 @@
 
-![full namer_app](https://user-images.githubusercontent.com/93227096/223277293-3c46b8d2-1790-4a09-bbdd-9c5211050101.gif)
+![full namer_app](https://user-images.githubusercontent.com/93227096/223277677-b39fe17e-320c-481d-9ce8-a0721f85d9fd.gif)
+
 
 # namer_app
 
