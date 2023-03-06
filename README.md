@@ -1,4 +1,5 @@
-![namer_app_2023-03-02_18-27-05_AdobeExpress](https://user-images.githubusercontent.com/93227096/222602475-d6621a16-1f22-45ec-a422-01af5618d4c2.gif)
+
+![full namer_app](https://user-images.githubusercontent.com/93227096/223277293-3c46b8d2-1790-4a09-bbdd-9c5211050101.gif)
 
 # namer_app
 
@@ -26,6 +27,11 @@ the menu is responsive
 ![image](https://user-images.githubusercontent.com/93227096/223274314-d372dda4-75d5-4b1d-a3b2-821585fe4016.png)
 
 ![image](https://user-images.githubusercontent.com/93227096/223274339-e369434f-35bd-4f9e-b090-84f6152e4046.png)
+
+Goes to the next word automatically after 1 second when liking
+
+![1sec dellay](https://user-images.githubusercontent.com/93227096/223277486-9a86e331-ab74-4de8-8c6b-93e5fd2548f4.gif)
+
 
 
 ### Dedicated to Euridice ♥ today made me feel better on a bad day
