@@ -1,26 +1,31 @@
 import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'dart:async';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
+import 'package:flutter/foundation.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => MyAppState(),
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => MyAppState(),
-      child: MaterialApp(
-        title: 'Namer App',
-        theme: ThemeData(
-          useMaterial3: true,
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueAccent),
-        ),
-        home: MyHomePage(),
+    final Color colorProvider = Provider.of<MyAppState>(context).colorTheme;
+    return MaterialApp(
+      title: 'Namer App',
+      theme: ThemeData.from(
+        colorScheme: ColorScheme.fromSeed(seedColor: colorProvider),
       ),
+      home: MyHomePage(),
     );
   }
 }
@@ -30,6 +35,13 @@ class MyAppState extends ChangeNotifier {
   var history = <WordPair>[];
 
   GlobalKey? historyListKey;
+  Color _colorTheme = Colors.blue;
+  Color get colorTheme => _colorTheme;
+
+  set colorTheme(Color newColor) {
+    _colorTheme = newColor;
+    notifyListeners();
+  }
 
   void getNext() {
     history.insert(0, current);
@@ -89,7 +101,55 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
 
+    // create some values
+    Color pickerColor =
+        Provider.of<MyAppState>(context, listen: false).colorTheme;
+    Color currentColor =
+        Provider.of<MyAppState>(context, listen: false).colorTheme;
+    ;
+
+// ValueChanged<Color> callback
+    void changeColor(Color color) {
+      setState(() => pickerColor = color);
+    }
+
     return Scaffold(
+      appBar: AppBar(
+        actions: [
+          IconButton(
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: const Text('Pick a color!'),
+                    content: SingleChildScrollView(
+                      child: BlockPicker(
+                        pickerColor: pickerColor,
+                        onColorChanged: changeColor,
+                      ),
+                    ),
+                    actions: <Widget>[
+                      ElevatedButton(
+                        child: const Text('Got it'),
+                        onPressed: () {
+                          setState(() => currentColor = pickerColor);
+                          print(pickerColor);
+                          Provider.of<MyAppState>(context, listen: false)
+                              .colorTheme = pickerColor;
+
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ],
+                  );
+                },
+              );
+            },
+            icon: Icon(Icons.color_lens_outlined),
+          ),
+        ],
+      ),
       body: LayoutBuilder(
         builder: (context, constraints) {
           if (constraints.maxWidth < 450) {
@@ -132,7 +192,9 @@ class _MyHomePageState extends State<MyHomePage> {
                         label: Text('Home'),
                       ),
                       NavigationRailDestination(
-                        icon: Icon(Icons.favorite),
+                        icon: Icon(
+                          Icons.favorite,
+                        ),
                         label: Text('Favorites'),
                       ),
                     ],
@@ -151,43 +213,10 @@ class _MyHomePageState extends State<MyHomePage> {
         },
       ),
     );
-    // return LayoutBuilder(builder: (context, constraints) {
-    //   return Scaffold(
-    //     body: Row(
-    //       children: [
-    //         SafeArea(
-    //           child: NavigationRail(
-    //             extended: constraints.maxWidth >= 600,
-    //             destinations: [
-    //               NavigationRailDestination(
-    //                 icon: Icon(Icons.home),
-    //                 label: Text('Home'),
-    //               ),
-    //               NavigationRailDestination(
-    //                 icon: Icon(Icons.favorite),
-    //                 label: Text('Favorites'),
-    //               ),
-    //             ],
-    //             selectedIndex: selecetedIndex,
-    //             onDestinationSelected: (value) {
-    //               setState(() {
-    //                 selecetedIndex = value;
-    //               });
-    //             },
-    //           ),
-    //         ),
-    //         Expanded(
-    //           child: Container(
-    //             color: Theme.of(context).colorScheme.primaryContainer,
-    //             child: page,
-    //           ),
-    //         ),
-    //       ],
-    //     ),
-    //   );
-    // });
   }
 }
+
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>//
 
 //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>//
 
@@ -273,6 +302,9 @@ class GeneratorPage extends StatelessWidget {
               ElevatedButton.icon(
                 onPressed: () {
                   appState.toggleFavorite();
+                  Timer(Duration(seconds: 1), () {
+                    appState.getNext();
+                  });
                 },
                 icon: Icon(icon),
                 label: Text('Like'),
