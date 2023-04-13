@@ -115,6 +115,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
     return Scaffold(
       appBar: AppBar(
+        title: Text('Namer App'),
         actions: [
           IconButton(
             onPressed: () {
